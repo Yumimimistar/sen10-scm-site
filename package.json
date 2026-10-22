@@ -1,0 +1,14 @@
+{
+  "name": "sen10-scm-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static SCM study site deployed to GitHub Pages with a lint gate",
+  "scripts": {
+    "lint": "eslint js",
+    "start": "npx serve ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0"
+  }
+}

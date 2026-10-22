@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Software Configuration Management · SEN10</title>
+  <meta name="description" content="Study notes on Software Configuration Management (SCM) for SEN10.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top">SCM Notes</a>
+    <nav aria-label="Sections">
+      <a href="#basics">Basics</a>
+      <a href="#parts">Parts</a>
+      <a href="#framework">Framework</a>
+      <a href="#build">Build</a>
+      <a href="#tools">Tools</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">SEN10 · Software Engineering</p>
+      <h1>Software Configuration Management</h1>
+      <p class="lead">How teams keep every piece of a software project (code, docs, tests) organized, versioned and under control.</p>
+      <p class="credit">Based on the lecture deck by Andrew Joseph Ramos.</p>
+    </section>
+
+    <section id="objectives" class="card">
+      <h2>Learning objectives</h2>
+      <ol>
+        <li>Describe SCM in the context of the software engineering process.</li>
+        <li>Identify the models in the configuration management framework.</li>
+        <li>Describe the activities of a software build and integration process.</li>
+        <li>Identify automation tools for configuration management.</li>
+      </ol>
+    </section>
+
+    <section id="basics">
+      <h2>1 · The basics</h2>
+      <div class="grid two">
+        <article class="card">
+          <h3>Definition</h3>
+          <p><strong>SCM</strong> is the process of managing all the pieces and parts (artifacts) produced during software development and support: code, documentation, tests, and more.</p>
+          <p>It is more than keeping multiple versions. It also involves planning and tools.</p>
+          <p>Guides: IEEE Std. 1042-1987, NASA's SCM Guidebook. SCM is also a key process in the SEI's Capability Maturity Model (CMM).</p>
+        </article>
+        <article class="card">
+          <h3>SCM activities</h3>
+          <ul>
+            <li>Understand the policy, process and resulting artifacts.</li>
+            <li>Define the framework used to manage them.</li>
+            <li>Bring in the tools that help.</li>
+            <li>Train the team and make sure the process is followed.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h3 class="sub">Why we need SCM</h3>
+      <table>
+        <thead><tr><th>Situation</th><th>What SCM does</th></tr></thead>
+        <tbody>
+          <tr><td>Many people, many versions, branches, authors, spread across locations</td><td>Keeps concurrent work coordinated</td></tr>
+          <tr><td>Requirements, policy, budget or schedule change</td><td>Accommodates change in a controlled way</td></tr>
+          <tr><td>Software must run on different machines and operating systems</td><td>Tracks each configuration</td></tr>
+          <tr><td>Changes cost money</td><td>Controls the cost of making changes</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub">SCM participants <span class="hint">(tap a role)</span></h3>
+      <div class="tabs" id="participant-tabs" role="tablist" aria-label="SCM participants"></div>
+      <div class="card tab-panel" id="participant-panel" role="tabpanel" aria-live="polite"></div>
+    </section>
+
+    <section id="parts">
+      <h2>2 · SCM parts</h2>
+      <p>What needs managing depends on the process. A conservative team on a large project may use full waterfall with inspections after each activity. A small Agile team may focus on requirements and coding. The parts fall into three groups:</p>
+      <div class="grid three">
+        <article class="card">
+          <h3>Artifacts</h3>
+          <ul>
+            <li>Requirements specification</li>
+            <li>Design specification</li>
+            <li>Source code</li>
+            <li>Executable code</li>
+            <li>Test cases</li>
+          </ul>
+          <p class="small">Hard part: the relationships between them, e.g. requirements and test cases, code and database tables, UI screens and code.</p>
+        </article>
+        <article class="card">
+          <h3>Policy impact</h3>
+          <p>A business decision changes how artifacts are controlled.</p>
+          <p class="small">Example: letting customers stay on French v2 <em>and</em> update to v2.1 (instead of moving to v3) forces a branching policy.</p>
+        </article>
+        <article class="card">
+          <h3>Process influence</h3>
+          <p>The development and support process shapes how artifacts are managed, such as promotion through test levels.</p>
+        </article>
+      </div>
+
+      <h3 class="sub">Try it: promotion through test levels</h3>
+      <p>Code is only promoted after it passes the level below. Once promoted, it is locked so it cannot regress.</p>
+      <div class="card">
+        <ol class="pipeline" id="pipeline"></ol>
+        <div class="row">
+          <button type="button" class="btn" id="promote-btn">Promote artifact</button>
+          <button type="button" class="btn ghost" id="reset-btn">Reset</button>
+        </div>
+        <p class="status" id="pipeline-status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="framework">
+      <h2>3 · Configuration management framework</h2>
+      <p>Two main models control all the pieces of software.</p>
+      <div class="grid two">
+        <article class="card">
+          <h3>Naming model</h3>
+          <p>Uniquely identifies each artifact and links related ones. Assumes a unique product name, several artifact types and forms, at least two levels of grouping (release, then version), and multi-country releases.</p>
+        </article>
+        <article class="card">
+          <h3>Storage and access model</h3>
+          <table class="compact">
+            <tbody>
+              <tr><th>Core</th><td>create, delete</td></tr>
+              <tr><th>Access</th><td>view, modify, return</td></tr>
+              <tr><th>Control and service</th><td>import/export, list, set/increment/change, gather/merge, promote</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+
+      <h3 class="sub">Try it: naming model builder <span class="hint">PP.CC.RRR.VVV.TT.FF</span></h3>
+      <div class="card">
+        <div class="fields" id="naming-fields"></div>
+        <p class="output-label">Artifact name</p>
+        <p class="output" id="naming-output" aria-live="polite"></p>
+        <p class="small" id="naming-meaning"></p>
+      </div>
+    </section>
+
+    <section id="build">
+      <h2>4 · Build and integration</h2>
+      <p>Turning source files into executables for a target environment. Two major steps: <strong>compile</strong>, then <strong>link</strong>. The build file controls the order: dependency checks, compile, link, generate data files.</p>
+      <pre class="ascii" aria-label="Build cycle diagram">
+ source ──► compile ──► errors? ──yes──► fix + recompile
+                │
+                no
+                ▼
+              link ──► executable ──► test / debug / fix</pre>
+      <table>
+        <thead><tr><th>Build type</th><th>When</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Complete (whole) rebuild</td><td>Often nightly</td><td>Large systems can take 6 to 7+ hours</td></tr>
+          <tr><td>Partial build</td><td>Daily fixes during testing</td><td>Not all code is affected, so use extreme care</td></tr>
+          <tr><td>Final build</td><td>Release</td><td>Full rebuild for the users' runtime environment, not just the developers'</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub">SCM planning</h3>
+      <p>Starts in the early coding phases and produces the <strong>SCM plan (SCMP)</strong>, which can follow IEEE 828 or the organization's own standard. It defines document types and naming, who owns baselines, version and change-control policies, tools, and a configuration management database.</p>
+    </section>
+
+    <section id="tools">
+      <h2>5 · SCM tools</h2>
+      <div class="grid three">
+        <article class="card"><h3>Concurrency management</h3><p>Handles the same file being edited by several people at once.</p></article>
+        <article class="card"><h3>Version control</h3><p>Saves every change, logs who made it, and lets you roll back.</p></article>
+        <article class="card"><h3>Synchronization</h3><p>Check out files or the whole repository, then check changes back in and stay up to date.</p></article>
+      </div>
+      <div class="grid two">
+        <article class="card"><h3>Git</h3><p>Free, open-source version control built for speed and all project sizes.</p><p><a href="https://git-scm.com/" rel="noopener">git-scm.com</a></p></article>
+        <article class="card"><h3>Azure DevOps Server / TFS</h3><p>A group of tools that helps a team collaborate and coordinate on building a product.</p><p><a href="https://azure.microsoft.com/en-us/services/devops/server/" rel="noopener">Azure DevOps Server</a></p></article>
+      </div>
+    </section>
+
+    <section id="recap" class="card accent">
+      <h2>Recap</h2>
+      <p>Large projects need their artifacts managed. The framework has two models, naming and storage/access. Combined with build and integration, they let a team manage software pieces and produce different releases.</p>
+    </section>
+
+    <section id="quiz">
+      <h2>Quick quiz</h2>
+      <div class="card" id="quiz-card"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>References: Tsui, Karam and Bernal, <em>Essentials of Software Engineering</em>; Pressman, <em>Software Engineering: A Practitioner's Approach</em>.</p>
+    <p class="small">Deployed with GitHub Actions. A JS lint check must pass before every deploy.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
