@@ -82,7 +82,7 @@ const quizQuestions = [
 /* ---------- Helpers ---------- */
 
 function byId(id) {
-  return document.getElementById(id);
+  return document.getElementById(id)
 }
 
 function makeEl(tag, className, text) {
