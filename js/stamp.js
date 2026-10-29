@@ -24,7 +24,7 @@
       padNumber(parts.version, 3),
       String(parts.type).toUpperCase(),
       String(parts.format).toUpperCase()
-    ].join(".");
+    ].join("-");
   }
 
   function formatLoadTime(date) {
