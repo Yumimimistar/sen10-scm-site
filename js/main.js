@@ -79,6 +79,15 @@ const quizQuestions = [
   }
 ];
 
+const pageConfig = {
+  product: "SC",
+  country: "PH",
+  release: 2,
+  version: 1,
+  type: "WB",
+  format: "HT"
+};
+
 /* ---------- Helpers ---------- */
 
 function byId(id) {
@@ -335,6 +344,12 @@ function setupNavHighlight() {
   });
 }
 
+/* ---------- Baseline stamp (runs on page load) ---------- */
+
+function stampBaseline() {
+  ConfigStamp.stampPage(byId("baseline-stamp"), pageConfig, new Date());
+}
+
 /* ---------- Init ---------- */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -343,4 +358,5 @@ document.addEventListener("DOMContentLoaded", function () {
   setupNamingBuilder();
   setupQuiz();
   setupNavHighlight();
+  stampBaseline();
 });
