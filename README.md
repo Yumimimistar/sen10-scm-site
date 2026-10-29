@@ -44,4 +44,3 @@ Run locally: `npm install`, then `npm run lint` and `npm test`.
 | `tests/stamp.test.js` | Jest tests |
 | `eslint.config.mjs` | Lint rules |
 | `.github/workflows/deploy.yml` | CI/CD workflow |
-| `PROMPTS.md` | LLM prompts used (for submission) |
